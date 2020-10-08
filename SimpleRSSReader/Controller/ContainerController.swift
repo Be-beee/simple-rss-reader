@@ -16,11 +16,14 @@ class ContainerController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if let loaded = loadData(at: "subscribe") {
+            subscribeMenu = loaded as! [URLInfo]
+        }
         configureHomeController()
     }
     
     func configureHomeController() {
-        let homeController = HomeController()
+        let homeController = UIStoryboard(name: "HomeController", bundle: nil).instantiateViewController(withIdentifier: "HomeController") as! HomeController
         homeController.delegate = self
         centerController = UINavigationController(rootViewController: homeController)
         
@@ -31,7 +34,7 @@ class ContainerController: UIViewController {
     
     func configureMenuController() {
         if menuController == nil {
-            menuController = MenuController()
+            menuController = UIStoryboard(name: "MenuController", bundle: nil).instantiateViewController(withIdentifier: "MenuController") as? MenuController
             menuController.delegate = self
             view.insertSubview(menuController.view, at: 0)
             addChild(menuController)
@@ -40,10 +43,11 @@ class ContainerController: UIViewController {
         }
     }
     
-    func animatePanel(shouldExpand: Bool, menuOption: MenuOption?) {
+    func animatePanel(shouldExpand: Bool, menuOption: Int?) {
         if shouldExpand {
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                 self.centerController.view.frame.origin.x = self.centerController.view.frame.width - 80
+                self.view.layoutIfNeeded()
             }, completion: nil)
         } else {
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
@@ -51,28 +55,33 @@ class ContainerController: UIViewController {
             }) { (_) in
                 guard let menuOption = menuOption else { return }
                 self.didSelectMenuOption(menuOption: menuOption)
+                self.view.layoutIfNeeded()
             }
         }
         
         animateStatusBar()
     }
     
-    func didSelectMenuOption(menuOption: MenuOption) {
+    func didSelectMenuOption(menuOption: Int) {
         let home = centerController.children.first as! HomeController
         home.startSpinner()
-        home.configureXMLParser(menuOption.rawValue)
+        home.configureXMLParser(menuOption)
+        home.appendImageInfo()
         home.stopSpinner()
     }
     
     func animateStatusBar() {
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
             self.setNeedsStatusBarAppearanceUpdate()
+            self.view.layoutIfNeeded()
         }, completion: nil)
     }
 }
 
+// MARK: - Extensions
+
 extension ContainerController: HomeControllerDelegate {
-    func handleMenuToggle(forMenuOption menuOption: MenuOption?) {
+    func handleMenuToggle(forMenuOption menuOption: Int?) {
         if !isExpanded {
             configureMenuController()
         }

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Search Controller-->
+        <scene sceneID="TcO-KB-kTi">
+            <objects>
+                <viewController storyboardIdentifier="SearchController" id="iCC-Cm-Vul" customClass="SearchController" customModule="SimpleRSSReader" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="X8e-Jf-HqI">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rHU-Ov-3JE">
+                                <rect key="frame" x="325" y="44" width="69" height="30"/>
+                                <state key="normal" title="Subscribe"/>
+                                <connections>
+                                    <action selector="subscribeFeeds:" destination="iCC-Cm-Vul" eventType="touchUpInside" id="n9F-fb-xdt"/>
+                                </connections>
+                            </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="GYN-cf-5FT">
+                                <rect key="frame" x="0.0" y="84" width="414" height="778"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="iCC-Cm-Vul" id="fkx-3k-CuX"/>
+                                    <outlet property="delegate" destination="iCC-Cm-Vul" id="lg4-aa-WA7"/>
+                                </connections>
+                            </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="No Result" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Upg-JR-NZM">
+                                <rect key="frame" x="20" y="48.5" width="73.5" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="cSF-oJ-nS0"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="rHU-Ov-3JE" firstAttribute="top" secondItem="cSF-oJ-nS0" secondAttribute="top" id="1HP-qa-FTg"/>
+                            <constraint firstItem="rHU-Ov-3JE" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Upg-JR-NZM" secondAttribute="trailing" constant="20" id="4Ff-qN-HNa"/>
+                            <constraint firstItem="cSF-oJ-nS0" firstAttribute="trailing" secondItem="GYN-cf-5FT" secondAttribute="trailing" id="KnK-oa-uTI"/>
+                            <constraint firstItem="Upg-JR-NZM" firstAttribute="leading" secondItem="cSF-oJ-nS0" secondAttribute="leading" constant="20" id="MGS-ot-OJE"/>
+                            <constraint firstItem="GYN-cf-5FT" firstAttribute="top" secondItem="rHU-Ov-3JE" secondAttribute="bottom" constant="10" id="PP5-lR-VvP"/>
+                            <constraint firstItem="GYN-cf-5FT" firstAttribute="leading" secondItem="cSF-oJ-nS0" secondAttribute="leading" id="c9z-2P-0s0"/>
+                            <constraint firstItem="cSF-oJ-nS0" firstAttribute="trailing" secondItem="rHU-Ov-3JE" secondAttribute="trailing" constant="20" id="gqI-vd-sFt"/>
+                            <constraint firstItem="rHU-Ov-3JE" firstAttribute="centerY" secondItem="Upg-JR-NZM" secondAttribute="centerY" id="rAH-MZ-i9W"/>
+                            <constraint firstItem="cSF-oJ-nS0" firstAttribute="bottom" secondItem="GYN-cf-5FT" secondAttribute="bottom" id="xbl-6J-VoB"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="resultFeedTitle" destination="Upg-JR-NZM" id="4gy-oB-xzH"/>
+                        <outlet property="resultFeeds" destination="GYN-cf-5FT" id="95u-Gq-Qhn"/>
+                        <outlet property="subscribeButton" destination="rHU-Ov-3JE" id="ERP-eb-PfP"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="R7b-EC-4L3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="765" y="127"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

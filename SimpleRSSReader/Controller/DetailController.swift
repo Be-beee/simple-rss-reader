@@ -7,8 +7,13 @@
 //
 
 import UIKit
+import SafariServices
 
 class DetailController: UIViewController {
+    
+    @IBOutlet var articleTitleLabel: UILabel!
+    @IBOutlet var articleImage: UIImageView!
+    @IBOutlet var articleContent: UILabel!
     
     var detailArticle = ItemModel()
     
@@ -21,46 +26,20 @@ class DetailController: UIViewController {
     }
     
     func configureUI() {
-        view.backgroundColor = .white
-        
-//        Setting UI
-        let title = UILabel()
-        title.text = detailArticle.title
-        title.font = UIFont.systemFont(ofSize: 21)
-        title.lineBreakMode = .byWordWrapping
-        title.numberOfLines = 0
-        
-        view.addSubview(title)
-        title.translatesAutoresizingMaskIntoConstraints = false
-        title.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
-        title.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
-        title.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
-        
-        let articleImage = UIImageView()
-        articleImage.image = UIImage(named: "No_Img.png")
-        articleImage.clipsToBounds = true
-        articleImage.contentMode = .scaleAspectFill
-        
-        view.addSubview(articleImage)
-        articleImage.translatesAutoresizingMaskIntoConstraints = false
-        articleImage.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 15).isActive = true
-        articleImage.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width - 40).isActive = true
-        articleImage.heightAnchor.constraint(equalToConstant: 250).isActive = true
-        articleImage.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
-        
-        let descriptionView = UITextView()
-        descriptionView.text = detailArticle.description
-        descriptionView.font = UIFont.systemFont(ofSize: 16)
-        descriptionView.isEditable = false
-        descriptionView.attributedText = detailArticle.description.loadHTML()
-
-        
-        view.addSubview(descriptionView)
-        descriptionView.translatesAutoresizingMaskIntoConstraints = false
-        descriptionView.topAnchor.constraint(equalTo: articleImage.bottomAnchor, constant: 15).isActive = true
-        descriptionView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
-        descriptionView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
-        descriptionView.heightAnchor.constraint(equalToConstant: 400).isActive = true
+        articleTitleLabel.text = detailArticle.title
+        articleImage.image = detailArticle.image
+        articleContent.attributedText = detailArticle.description.loadHTML()
     }
+    
+//    @IBAction func visitWebsite(_ sender: UIButton) {
+//        guard let url = URL(string: detailArticle.link) else {
+//            return
+//        }
+//        let safariVC = SFSafariViewController(url: url)
+//        self.present(safariVC, animated: true, completion: nil)
+//        let vc = SFSafariViewController(url: URL(string: detailArticle.link)!)
+//        self.present(vc, animated: true, completion: nil)
+//    }
+    
     
 }

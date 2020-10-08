@@ -12,7 +12,7 @@ private let reuseIdentifier = "MenuOptionCell"
 
 class MenuController: UIViewController {
 
-    var menuTable: UITableView!
+    @IBOutlet weak var menuTableView: UITableView!
     var delegate: HomeControllerDelegate?
     
     override func viewDidLoad() {
@@ -20,22 +20,15 @@ class MenuController: UIViewController {
         configureTableView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        menuTableView.reloadData()
+    }
+    
     func configureTableView() {
-        menuTable = UITableView()
-        menuTable.delegate = self
-        menuTable.dataSource = self
-        
-        menuTable.register(MenuOptionCell.self, forCellReuseIdentifier: reuseIdentifier)
-        menuTable.backgroundColor = .darkGray
-        menuTable.separatorStyle = .none
-        menuTable.rowHeight = 80
-        
-        view.addSubview(menuTable)
-        menuTable.translatesAutoresizingMaskIntoConstraints = false
-        menuTable.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        menuTable.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        menuTable.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        menuTable.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        menuTableView.register(MenuOptionCell.self, forCellReuseIdentifier: reuseIdentifier)
+        menuTableView.backgroundColor = .darkGray
+        menuTableView.rowHeight = 80
     }
 
 }
@@ -44,21 +37,28 @@ class MenuController: UIViewController {
 
 extension MenuController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return subscribeMenu.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! MenuOptionCell
+        let cell = menuTableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! MenuOptionCell
         
-        let menuOption = MenuOption(rawValue: indexPath.row)
-        cell.descriptionLabel.text = menuOption?.description
+        let menuOption = subscribeMenu[indexPath.row]
+        cell.descriptionLabel.text = menuOption.title
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let menuOption = MenuOption(rawValue: indexPath.row)
+        let menuOption = indexPath.row
         delegate?.handleMenuToggle(forMenuOption: menuOption)
     }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            subscribeMenu.remove(at: indexPath.row)
+            menuTableView.reloadData()
+            saveData(data: subscribeMenu, at: "subscribe")
+        }
+    }
 }
