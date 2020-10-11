@@ -26,7 +26,7 @@ class HomeController: UIViewController {
         feedTableView.register(FeedCell.self, forCellReuseIdentifier: feedCellIdentifier)
         if !subscribeMenu.isEmpty {
             configureXMLParser(0)
-          appendImageInfo()
+            appendImageInfo()
         }
         stopSpinner()
     }

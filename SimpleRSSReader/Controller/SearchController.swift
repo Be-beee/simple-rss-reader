@@ -69,6 +69,10 @@ extension SearchController: UISearchBarDelegate {
                     resultFeedTitle.text = parser.results.title
                     subscribeButton.isEnabled = true
                     searching = hasText
+                    for item in parser.results.articles {
+                        let imageParser = ImageParser(url: item.link)
+                        item.image = imageParser.urlToImage()
+                    }
                     resultFeeds.reloadData()
                 }
                 
@@ -89,7 +93,7 @@ extension SearchController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = resultFeeds.dequeueReusableCell(withIdentifier: "FeedCell", for: indexPath) as! FeedCell
         cell.title.text = parser.results.articles[indexPath.row].title
-        
+        cell.feedCover.image = parser.results.articles[indexPath.row].image
         return cell
     }
 }
