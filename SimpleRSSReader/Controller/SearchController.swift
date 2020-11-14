@@ -30,7 +30,7 @@ class SearchController: UIViewController {
         searchController.searchBar.placeholder = "URL을 입력하세요"
         self.navigationItem.searchController = searchController
         
-        resultFeeds.register(FeedCell.self, forCellReuseIdentifier: "FeedCell")
+        resultFeeds.register(UINib(nibName: "FeedCell", bundle: nil), forCellReuseIdentifier: "FeedCell")
     }
     
     
@@ -69,11 +69,15 @@ extension SearchController: UISearchBarDelegate {
                     resultFeedTitle.text = parser.results.title
                     subscribeButton.isEnabled = true
                     searching = hasText
-                    for item in parser.results.articles {
-                        let imageParser = ImageParser(url: item.link)
-                        item.image = imageParser.urlToImage()
+                    DispatchQueue.global().async {
+                        for item in self.parser.results.articles {
+                            let imageParser = ImageParser(url: item.link)
+                            item.image = imageParser.urlToImage()
+                        }
+                        DispatchQueue.main.async {
+                            self.resultFeeds.reloadData()
+                        }
                     }
-                    resultFeeds.reloadData()
                 }
                 
             }
@@ -91,7 +95,7 @@ extension SearchController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = resultFeeds.dequeueReusableCell(withIdentifier: "FeedCell", for: indexPath) as! FeedCell
+        guard let cell = resultFeeds.dequeueReusableCell(withIdentifier: "FeedCell", for: indexPath) as? FeedCell else { return UITableViewCell() }
         cell.title.text = parser.results.articles[indexPath.row].title
         cell.feedCover.image = parser.results.articles[indexPath.row].image
         return cell

@@ -8,8 +8,6 @@
 
 import UIKit
 
-private let feedCellIdentifier = "FeedCell"
-
 class HomeController: UIViewController {
     @IBOutlet var feedTableView: UITableView!
     @IBOutlet var spinner: UIActivityIndicatorView!
@@ -23,7 +21,7 @@ class HomeController: UIViewController {
         view.backgroundColor = .white
         configureNavigationBar()
         startSpinner()
-        feedTableView.register(FeedCell.self, forCellReuseIdentifier: feedCellIdentifier)
+        feedTableView.register(UINib(nibName: "FeedCell", bundle: nil), forCellReuseIdentifier: "FeedCell")
         if !subscribeMenu.isEmpty {
             configureXMLParser(0)
             appendImageInfo()
@@ -69,11 +67,15 @@ class HomeController: UIViewController {
     }
     
     func appendImageInfo() {
-        for item in parser.results.articles {
-            let imageParser = ImageParser(url: item.link)
-            item.image = imageParser.urlToImage()
+        DispatchQueue.global().async {
+            for item in self.parser.results.articles {
+                let imageParser = ImageParser(url: item.link)
+                item.image = imageParser.urlToImage()
+            }
+            DispatchQueue.main.async {
+                self.feedTableView.reloadData()
+            }
         }
-        feedTableView.reloadData()
     }
 }
 
@@ -90,7 +92,7 @@ extension HomeController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = feedTableView.dequeueReusableCell(withIdentifier: feedCellIdentifier, for: indexPath) as! FeedCell
+        guard let cell = feedTableView.dequeueReusableCell(withIdentifier: "FeedCell", for: indexPath) as? FeedCell else { return UITableViewCell() }
         cell.feedCover.image = parser.results.articles[indexPath.row].image
         cell.title.text = parser.results.articles[indexPath.row].title
         return cell
