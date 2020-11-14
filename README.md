@@ -23,6 +23,9 @@ rss 파싱, rss 구독 등의 간단한 기능을 제공하는 rss 리더기 어
 
 아래에 커밋 상세 내용을 기술하였습니다.
 
+### Improve Performances
+- 메인 화면을 불러올 때, URL 검색 결과를 표시할 때 퍼포먼스를 향상시켰습니다!🥳
+
 ### Update README.md and fix some bugs
 - README.md를 업로드하고 검색 결과 화면에서 이미지가 보이지 않는 버그를 수정하였습니다.
 
